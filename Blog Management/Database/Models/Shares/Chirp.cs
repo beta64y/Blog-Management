@@ -16,8 +16,7 @@ namespace Blog_Management.Database.Models.Shares
         public string Title { get; set; }
         public string ChirpText { get; set; }
         public User User { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public List<Comment> Comments { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public int Likes { get; set; } = 0; 
         public Chirp(string title, string chirpText, User user ,string id)
         {

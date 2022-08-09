@@ -26,7 +26,7 @@ namespace Blog_Management.Services
                 {
                     User user = UserRepository.GetUserByEmail(email);
                     Console.WriteLine($"{user.FirstName} {user.LastName} Permanently Banned");
-                    UserRepository.Delete(user);
+                    UserRepository.Remove(user);
 
                 }
             }
@@ -169,29 +169,27 @@ namespace Blog_Management.Services
 
 
         }
-        public static void SearchChirp()
+        public static void ShowFilteredChirpsWithComments()
         {
-            Console.Write("Please enter chirp's Title : ");
-            string title = Console.ReadLine();
-            if (ChirpRepository.GetChirpsByTitle(title).Count > 0)
+            Console.Write("Please write the filter you will use for the search  : ");
+            string filter = Console.ReadLine();
+            if(filter == "Title")
             {
-                foreach (Chirp chirp in ChirpRepository.GetChirpsByTitle(title))
-                {
-                    GetChirp(chirp); // deyisdirilecek
-                }
+                SearchChirpByTitle();
             }
-            else
+            else if(filter == "Firstname")
             {
-                Console.WriteLine("");
+                SearchChirpByAuthor();
             }
-
         }
-        //public static void SearchChrip()
-        //{
-        //    Console.Write("Please enter chirp's Id : ");
-        //    string id = Console.ReadLine();
-        //    GetChirp(ChirpRepository.GetById(id));
-        //}                                               adminler ucun             
+
+        public static void GetActiveAccountChrips()
+        {
+            foreach(Chirp chirp in Authentication.GetAccount().Chirps)
+            {
+                GetChirp(chirp);
+            }
+        }                                                      
         public static void Help()
         {
             // dash board ucun doldurulacaq
@@ -204,7 +202,38 @@ namespace Blog_Management.Services
 
 
 
-
+        public static void SearchChirpByTitle()
+        {
+            Console.Write("Please enter chirp's Title : ");
+            string title = Console.ReadLine();
+            if (ChirpRepository.GetChirpsByTitle(title).Count > 0)
+            {
+                foreach (Chirp chirp in ChirpRepository.GetChirpsByTitle(title))
+                {
+                    GetChirp(chirp); // deyisdirilecek
+                }
+            }
+            else
+            {
+                Console.WriteLine("no match found");
+            }
+        }
+        public static void SearchChirpByAuthor()
+        {
+            Console.Write("Please enter firstname of chirp's author  : ");
+            string name = Console.ReadLine();
+            if (ChirpRepository.GetChirpsByFirstName(name).Count > 0)
+            {
+                foreach (Chirp chirp in ChirpRepository.GetChirpsByFirstName(name))
+                {
+                    GetChirp(chirp); 
+                }
+            }
+            else
+            {
+                Console.WriteLine("no match found");
+            }
+        }
         private static string GetTitle()
         {
             bool title_wrongChecker = false;

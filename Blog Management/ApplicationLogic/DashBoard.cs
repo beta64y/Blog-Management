@@ -22,11 +22,7 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.Update();
                 }
-                else if(command == "/show-admin")
-                {
-                    DashBoardServices.ShowAdmins();
-                }
-                else if (command == "/support")
+                else if (command == "/panel-help")
                 {
                     DashBoardServices.Help();
                 }
@@ -54,6 +50,10 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.RemoveUser(); 
                 }
+                else if (command == "/show-admins")
+                {
+                    DashBoardServices.ShowAdmins();
+                }
                 else if (command == "/update-admin")
                 {
                     DashBoardServices.UpdateforAdmin();
@@ -66,7 +66,7 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.ShowUsers();
                 }
-                else if (command == "/support")
+                else if (command == "/panel-help")
                 {
                     DashBoardServices.Help();
                 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog_Management.Database.Models.Users;
 using Blog_Management.Database.Repository.Common;
+using Blog_Management.Database.Models.Inbox;
 
 
 namespace Blog_Management.Database.Repository
@@ -16,7 +17,12 @@ namespace Blog_Management.Database.Repository
         {
             User user = new User(firstName, lastName, email, password);
             Add(user);
+            user.Inbox.Add(new Message("Welcome , Your request has been read and approved"));
             return user;
+        }
+        public static void Remove(User user)
+        {
+            // yazilacaq
         }
 
         public static void Update(User user, string firstName, string lastName)
@@ -85,11 +91,9 @@ namespace Blog_Management.Database.Repository
 
         public static void AddAdmin(User user)
         {
-            if(!(user is Admin))
-            {
                 Add(new Admin(user.FirstName, user.LastName, user.Email, user.Password,user.Id,user.CreationTime));
                 Delete(user);
-            }
+            
         }
         
             //new Admin("Yahya", "Camalzade", "Camalzadeyahya1@gmail.com", "Yahya123");

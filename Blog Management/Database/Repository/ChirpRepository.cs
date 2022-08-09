@@ -54,6 +54,19 @@ namespace Blog_Management.Database.Repository
             return chirpList;
 
         }
+        public static List<Chirp> GetChirpsByFirstName(string name)
+        {
+            List<Chirp> chirpList = new List<Chirp>();
+            foreach (Chirp chirp in DbContext)
+            {
+                if (chirp.User.FirstName == name)
+                {
+                    chirpList.Add(chirp);
+                }
+            }
+            return chirpList;
+
+        }
 
     }
 }

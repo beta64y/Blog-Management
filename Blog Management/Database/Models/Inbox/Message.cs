@@ -11,8 +11,14 @@ namespace Blog_Management.Database.Models.Inbox
     internal class Message : Entity<int>
     {
         private static int IdCounter = 1;
-        public User Sender { get; set; }
+        public User Sender { get; set; } = null;
         public string Text { get; set; }
+        public Message(string text)
+        {
+            Text = text;
+            CreationTime = DateTime.Now;
+            Id = IdCounter++;
+        }
         public Message(User sender, string text)
         {
             Sender = sender;
