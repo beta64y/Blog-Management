@@ -117,7 +117,7 @@ namespace Blog_Management.Services
             foreach (Message message in Authentication.GetAccount().Inbox)
             {
                 Console.WriteLine("***********************************************");
-                Console.WriteLine($"{message.Sender} : {message.Text}");
+                Console.WriteLine($"{(message.Sender == null ? "System": message.Sender.FirstName + message.Sender.LastName)} : {message.Text}");
                 Console.WriteLine($"{message.CreationTime}");
                 Console.WriteLine("***********************************************");
             }
@@ -182,8 +182,7 @@ namespace Blog_Management.Services
                 SearchChirpByAuthor();
             }
         }
-
-        public static void GetActiveAccountChrips()
+        public static void ShowActiveAccountChrips()
         {
             foreach(Chirp chirp in Authentication.GetAccount().Chirps)
             {
@@ -201,7 +200,19 @@ namespace Blog_Management.Services
 
 
 
-
+        public static void SearchChirpById()
+        {
+            Console.Write("Please enter chirp's Code : ");
+            string id = Console.ReadLine();
+            if (ChirpRepository.GetById(id) != null)
+            {
+                GetChirp(ChirpRepository.GetById(id));
+            }
+            else
+            {
+                Console.WriteLine("no match found");
+            }
+        }
         public static void SearchChirpByTitle()
         {
             Console.Write("Please enter chirp's Title : ");
@@ -272,12 +283,35 @@ namespace Blog_Management.Services
         {
             Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
             Console.WriteLine($"{chirp.Title}\n");
-            //Console.WriteLine();                                            //alqoritm yazilacaq
+            CCCCCCCCC(chirp.ChirpText);
             Console.WriteLine($"Likes : {chirp.Likes}\n");
             Console.WriteLine($"{chirp.CreationTime}\n");
             Console.WriteLine("***************************************\n");
+            GetChirpComments(chirp);
         }
-
+        private static void GetChirpComments(Chirp chirp)
+        {
+            foreach(Comment comment in CommentRepository.GetChirpComments(chirp))
+            {
+                Console.WriteLine($"* [{comment.CreationTime}] [{comment.User.FirstName} {comment.User.LastName}] : {comment.CommentText}");
+            }
+            Console.WriteLine("***************************************\n");
+        }
+        private static void CCCCCCCCC(string text)
+        {
+            int z = 0;
+            string[] textArray =text.Split(" ");
+            for (int i = 0; i < text.Length; i++)
+            {
+                Console.Write(text[i] + " ");
+                z += textArray[i].Length;
+                if (z > 50)
+                {
+                    z = 0;
+                    Console.WriteLine();
+                }
+            }
+        }
 
     }
 }

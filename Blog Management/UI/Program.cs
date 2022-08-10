@@ -18,8 +18,7 @@ namespace Blog_Management.UI
                 if (command == "/register")
                 {
                     Authentication.Register();
-                }
-
+                }               
                 else if (command == "/login")
                 {
                     Authentication.Login();

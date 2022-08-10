@@ -10,6 +10,17 @@ namespace Blog_Management.Database.Repository
 {
     internal class CommentRepository : Repository<Comment,int>
     {
-      
+      public static List<Comment> GetChirpComments(Chirp chirp)
+        {
+            List<Comment> comments = new List<Comment>();
+            foreach(Comment comment in DbContext)
+            {
+                if(comment.Chirp == chirp)
+                {
+                    comments.Add(comment);
+                }
+            }    
+            return comments;
+        }
     }
 }

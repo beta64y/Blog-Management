@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Blog_Management.Database.Repository;
 using Blog_Management.Database.Models.Users;
 using Blog_Management.Services;
+using Blog_Management.Database.Models.Inbox;
 
 namespace Blog_Management.ApplicationLogic
 {
@@ -130,6 +131,7 @@ namespace Blog_Management.ApplicationLogic
 
             ChirpRepository.Append(Authentication.GetAccount(), title, text);
         }
+        
         public static void Help()
         {
             

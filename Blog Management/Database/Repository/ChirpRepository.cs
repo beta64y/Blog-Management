@@ -36,7 +36,7 @@ namespace Blog_Management.Database.Repository
         {
             chirp.User.Chirps.Remove(chirp);
             Delete(chirp);
-            foreach(Comment comment in chirp.Comments)
+            foreach(Comment comment in CommentRepository.GetChirpComments(chirp))
             {
                 comment.User.Comments.Remove(comment);
             }

@@ -22,6 +22,34 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.Update();
                 }
+                else if (command == "/inbox")
+                {
+                    DashBoardServices.ShowInbox();
+                }
+                else if (command == "/chirps")
+                {
+                    DashBoardServices.ShowActiveAccountChrips();
+                }
+                else if (command == "/add-chirp")
+                {
+                    DashBoardServices.AddChirp();
+                }
+                else if (command == "/delete-chirp")
+                {
+                    DashBoardServices.DeleteChirp();
+                }
+                else if (command == "/show-filtered-chirps-with-comment")
+                {
+                    DashBoardServices.ShowFilteredChirpsWithComments();
+                }
+                else if (command == "/show-chirps-with-comment")
+                {
+                    DashBoardServices.ShowChirps();
+                }
+                else if (command == "/find-chirp-by-code")
+                {
+                    DashBoardServices.SearchChirpById();
+                }
                 else if (command == "/panel-help")
                 {
                     DashBoardServices.Help();
@@ -50,6 +78,10 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.RemoveUser(); 
                 }
+                else if (command == "/inbox")
+                {
+                    DashBoardServices.ShowInbox();
+                }
                 else if (command == "/show-admins")
                 {
                     DashBoardServices.ShowAdmins();
@@ -65,6 +97,22 @@ namespace Blog_Management.ApplicationLogic
                 else if (command == "/show-users")
                 {
                     DashBoardServices.ShowUsers();
+                }
+                else if (command == "/chirps")
+                {
+                    DashBoardServices.ShowActiveAccountChrips();
+                }
+                else if (command == "/show-filtered-chirps-with-comment")
+                {
+                    DashBoardServices.ShowFilteredChirpsWithComments();
+                }
+                else if (command == "/show-chirps-with-comment")
+                {
+                    DashBoardServices.ShowChirps();
+                }
+                else if (command == "/find-chirp-by-code")
+                {
+                    DashBoardServices.SearchChirpById();
                 }
                 else if (command == "/panel-help")
                 {
