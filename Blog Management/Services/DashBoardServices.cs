@@ -13,24 +13,7 @@ namespace Blog_Management.Services
 {
     internal class DashBoardServices
     {
-
-
-        public static void RemoveUser()
-        {
-            if (Authentication.GetAccount() is Admin)
-            {
-                Console.Write("Please enter user's email : ");
-                string email = Console.ReadLine();
-
-                if (UserRepository.IsUserExistByEmail(email) && (UserRepository.GetUserByEmail(email) is not Admin))
-                {
-                    User user = UserRepository.GetUserByEmail(email);
-                    Console.WriteLine($"{user.FirstName} {user.LastName} Permanently Banned");
-                    UserRepository.Remove(user);
-
-                }
-            }
-        }
+        //user
         public static void Update()
         {
             Console.Write("Please enter your password : ");
@@ -53,6 +36,34 @@ namespace Blog_Management.Services
             }
 
         }
+        public static void ShowInbox()
+        {
+            foreach (Message message in Authentication.GetAccount().Inbox)
+            {
+                Console.WriteLine("***********************************************");
+                Console.WriteLine($"{(message.Sender == null ? "System": message.Sender.FirstName + message.Sender.LastName)} : {message.Text}");
+                Console.WriteLine($"{message.CreationTime}");
+                Console.WriteLine("***********************************************");
+            }
+        }
+        
+        //admin
+        public static void RemoveUser()
+        {
+            if (Authentication.GetAccount() is Admin)
+            {
+                Console.Write("Please enter user's email : ");
+                string email = Console.ReadLine();
+
+                if (UserRepository.IsUserExistByEmail(email) && (UserRepository.GetUserByEmail(email) is not Admin))
+                {
+                    User user = UserRepository.GetUserByEmail(email);
+                    Console.WriteLine($"{user.FirstName} {user.LastName} Permanently Banned");
+                    UserRepository.Remove(user);
+
+                }
+            }
+        }      
         public static void UpdateforAdmin()
         {
             Console.Write("Please enter user's email : ");
@@ -112,16 +123,8 @@ namespace Blog_Management.Services
                 Console.WriteLine("Rules : \n1. An Admin cannot Make admin their own account \n2. The email entered must be valid \n3. The email entered must be User ");
             }
         }
-        public static void ShowInbox()
-        {
-            foreach (Message message in Authentication.GetAccount().Inbox)
-            {
-                Console.WriteLine("***********************************************");
-                Console.WriteLine($"{(message.Sender == null ? "System": message.Sender.FirstName + message.Sender.LastName)} : {message.Text}");
-                Console.WriteLine($"{message.CreationTime}");
-                Console.WriteLine("***********************************************");
-            }
-        }
+        
+        //chirp
         public static void AddChirp()
         {
             Console.Write("Please enter chirp's title : ");
@@ -182,24 +185,34 @@ namespace Blog_Management.Services
                 SearchChirpByAuthor();
             }
         }
-        public static void ShowActiveAccountChrips()
+        public static void ShowActiveAccountChirps()
         {
             foreach(Chirp chirp in Authentication.GetAccount().Chirps)
             {
                 GetChirp(chirp);
             }
         }                                                      
+        public static void ShowAuditingChirps()
+        {
+
+        }
+        public static void ApproveChirp()
+        {
+
+        }
+        public static void RejectChirp()
+        {
+
+        }
+
+
+        //help
         public static void Help()
         {
             // dash board ucun doldurulacaq
         }
 
-
-
-
-
-
-
+        // some tools 
         public static void SearchChirpById()
         {
             Console.Write("Please enter chirp's Code : ");
@@ -283,7 +296,7 @@ namespace Blog_Management.Services
         {
             Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
             Console.WriteLine($"{chirp.Title}\n");
-            CCCCCCCCC(chirp.ChirpText);
+            OutputTextDesiner(chirp.ChirpText, 50);
             Console.WriteLine($"Likes : {chirp.Likes}\n");
             Console.WriteLine($"{chirp.CreationTime}\n");
             Console.WriteLine("***************************************\n");
@@ -297,7 +310,7 @@ namespace Blog_Management.Services
             }
             Console.WriteLine("***************************************\n");
         }
-        private static void CCCCCCCCC(string text)
+        private static void OutputTextDesiner(string text ,int charcount)
         {
             int z = 0;
             string[] textArray =text.Split(" ");
@@ -305,7 +318,7 @@ namespace Blog_Management.Services
             {
                 Console.Write(text[i] + " ");
                 z += textArray[i].Length;
-                if (z > 50)
+                if (z > charcount)
                 {
                     z = 0;
                     Console.WriteLine();

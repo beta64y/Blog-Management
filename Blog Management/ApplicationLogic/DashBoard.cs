@@ -28,7 +28,7 @@ namespace Blog_Management.ApplicationLogic
                 }
                 else if (command == "/chirps")
                 {
-                    DashBoardServices.ShowActiveAccountChrips();
+                    DashBoardServices.ShowActiveAccountChirps();
                 }
                 else if (command == "/add-chirp")
                 {
@@ -100,7 +100,7 @@ namespace Blog_Management.ApplicationLogic
                 }
                 else if (command == "/chirps")
                 {
-                    DashBoardServices.ShowActiveAccountChrips();
+                    DashBoardServices.ShowActiveAccountChirps();
                 }
                 else if (command == "/show-filtered-chirps-with-comment")
                 {
