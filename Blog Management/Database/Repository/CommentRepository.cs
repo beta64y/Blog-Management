@@ -10,6 +10,11 @@ namespace Blog_Management.Database.Repository
 {
     internal class CommentRepository : Repository<Comment,int>
     {
+      public static void Remove(Comment comment)
+        {
+            DbContext.Remove(comment);
+            comment.User.Comments.Remove(comment);
+        }
       public static List<Comment> GetChirpComments(Chirp chirp)
         {
             List<Comment> comments = new List<Comment>();

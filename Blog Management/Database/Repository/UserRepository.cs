@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog_Management.Database.Models.Users;
 using Blog_Management.Database.Repository.Common;
+using Blog_Management.Database.Models.Shares;
 using Blog_Management.Database.Models.Inbox;
 
 
@@ -22,7 +23,15 @@ namespace Blog_Management.Database.Repository
         }
         public static void Remove(User user)
         {
-            // yazilacaq
+            foreach(Comment comment in user.Comments)
+            {
+                CommentRepository.Remove(comment);
+            }
+            foreach (Chirp chirp in user.Chirps)
+            {
+                ChirpRepository.Remove(chirp);
+            }
+            Delete(user);
         }
 
         public static void Update(User user, string firstName, string lastName)

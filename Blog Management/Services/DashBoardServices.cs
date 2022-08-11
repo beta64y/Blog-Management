@@ -146,7 +146,7 @@ namespace Blog_Management.Services
                     
                 if (answer == "Yes") 
                 {
-                    ChirpRepository.Delete(chirp);
+                    ChirpRepository.Remove(chirp);
                     Console.WriteLine("Chirp Deleted"); 
                 }
                 else
@@ -304,9 +304,10 @@ namespace Blog_Management.Services
         }
         private static void GetChirpComments(Chirp chirp)
         {
-            foreach(Comment comment in CommentRepository.GetChirpComments(chirp))
+            List<Comment> comments = CommentRepository.GetChirpComments(chirp);
+            for(int i = 0; i < comments.Count; i++)
             {
-                Console.WriteLine($"* [{comment.CreationTime}] [{comment.User.FirstName} {comment.User.LastName}] : {comment.CommentText}");
+                Console.WriteLine($" {i+1}* [{comments[i].CreationTime}] [{comments[i].User.FirstName} {comments[i].User.LastName}] : {comments[i].CommentText}");
             }
             Console.WriteLine("***************************************\n");
         }

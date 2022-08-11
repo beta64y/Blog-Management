@@ -38,7 +38,8 @@ namespace Blog_Management.Database.Repository
             Delete(chirp);
             foreach(Comment comment in CommentRepository.GetChirpComments(chirp))
             {
-                comment.User.Comments.Remove(comment);
+                
+                CommentRepository.Remove(comment);
             }
         }
         public static List<Chirp> GetChirpsByTitle(string title)
