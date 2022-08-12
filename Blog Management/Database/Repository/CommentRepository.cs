@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog_Management.Database.Repository.Common;
 using Blog_Management.Database.Models.Shares;
+using Blog_Management.Database.Models.Users;
 
 namespace Blog_Management.Database.Repository
 {
@@ -12,13 +13,13 @@ namespace Blog_Management.Database.Repository
     {
       public static void Remove(Comment comment)
         {
-            DbContext.Remove(comment);
-            comment.User.Comments.Remove(comment);
+            CommentRepository.GetAll().Remove(comment);
+            
         }
-      public static List<Comment> GetChirpComments(Chirp chirp)
+      public static List<Comment> GetCommentsByChirp(Chirp chirp)
         {
             List<Comment> comments = new List<Comment>();
-            foreach(Comment comment in DbContext)
+            foreach(Comment comment in CommentRepository.GetAll())
             {
                 if(comment.Chirp == chirp)
                 {
@@ -27,5 +28,6 @@ namespace Blog_Management.Database.Repository
             }    
             return comments;
         }
+        
     }
 }

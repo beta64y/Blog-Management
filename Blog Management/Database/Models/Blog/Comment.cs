@@ -13,7 +13,7 @@ namespace Blog_Management.Database.Models.Shares
     internal class Comment : Entity<int>
     {
         public User User { get; set; }
-        public Chirp Chirp { get; set; }
         public string CommentText { get; set; }
+        public Chirp Chirp { get; set; }
     }
 }

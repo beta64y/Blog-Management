@@ -17,9 +17,7 @@ namespace Blog_Management.Database.Models.Users
         public  string LastName { get; set; }
         public  string Email { get; set; }
         public string Password { get; set; }
-        public DateTime? Updatedat { get; set; } = null;
-        public List<Chirp> Chirps { get; set; } = new List<Chirp>();
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public DateTime? Updatedat { get; set; } = null;       
         public List<Message> Inbox { get; set; } = new List<Message>();
 
       

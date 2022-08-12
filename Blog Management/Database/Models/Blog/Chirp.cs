@@ -16,7 +16,7 @@ namespace Blog_Management.Database.Models.Shares
         public string ChirpText { get; set; }
         public User User { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public BlogStatus BlogStatus { get; set; } = BlogStatus.Waiting;
+        public ChirpStatus BlogStatus { get; set; } = ChirpStatus.Waiting;
         public Chirp(string title, string chirpText, User user ,string id)
         {
             Id = id;
@@ -25,7 +25,7 @@ namespace Blog_Management.Database.Models.Shares
             User = user;
             CreationTime = DateTime.Now;
         }
-        public Chirp(string title, string chirpText, User user, string id,BlogStatus blogStatus)
+        public Chirp(string title, string chirpText, User user, string id, ChirpStatus blogStatus)
         {
             Id = id;
             Title = title;

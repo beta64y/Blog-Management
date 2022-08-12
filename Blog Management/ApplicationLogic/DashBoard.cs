@@ -11,7 +11,7 @@ namespace Blog_Management.ApplicationLogic
     {
         public static void UserPanel()
         {
-            Console.WriteLine("Hi , You are currently using the panel ,You Can Use /support Command for Get Information about panel !");
+            Console.WriteLine("Hi , You are currently using the panel ,You Can Use /panel-help Command for Get Information about panel !");
             while (true)
             {
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blog_Management.Database.Enums
 {
-    public enum BlogStatus
+    public enum ChirpStatus
     {
         Accepted = 1,
         Rejected = 2,

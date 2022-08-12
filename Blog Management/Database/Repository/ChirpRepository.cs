@@ -17,41 +17,19 @@ namespace Blog_Management.Database.Repository
             User user = UserRepository.GetById(1);
             User user1 = UserRepository.GetById(2);
             User user2 = UserRepository.GetById(3);
-
-            Append(user, "SalamSalam", "Salamsalamsalam");
-            Append(user1, "Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.");
-            Append(user2, "Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.");
-            DbContext[0].BlogStatus = BlogStatus.Accepted;
-            DbContext[2].BlogStatus = BlogStatus.Accepted;
-            DbContext[3].BlogStatus = BlogStatus.Accepted;
+            Chirp chirp = new Chirp("SalamSalam", "Salamsalamsalam", user,"BL00001");
+            Chirp chirp2 = new Chirp("Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.", user1, "BL00002");
+            Chirp chirp3 = new Chirp("Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.", user2, "BL00003");
+            ChirpRepository.GetAll()[0].BlogStatus = ChirpStatus.Accepted;
+            ChirpRepository.GetAll()[1].BlogStatus = ChirpStatus.Accepted;
+            ChirpRepository.GetAll()[2].BlogStatus = ChirpStatus.Accepted;            
         }
 
-        public static void Append(User user, string title,string text)
-        {
-            string id;
-            while (true)
-            {
-                Random random = new Random();
-                id = Convert.ToString(random.Next(0, 100000));
-                for (int i = 0; i < 6 - id.Length; i++)
-                {
-                    id = "0" + id;
-                }
-                id = "BL" + id;
-                if (GetById(id) == null)
-                {
-                     break;
-                }
-            }
-            Chirp chirp = new Chirp(title ,text,user,id);
-            Add(chirp);
-            user.Chirps.Add(chirp);
-        }
+       
         public static void Remove(Chirp chirp)
         {
-            chirp.User.Chirps.Remove(chirp);
             Delete(chirp);
-            foreach(Comment comment in CommentRepository.GetChirpComments(chirp))
+            foreach(Comment comment in CommentRepository.GetCommentsByChirp(chirp))
             {
                 
                 CommentRepository.Remove(comment);
@@ -60,9 +38,9 @@ namespace Blog_Management.Database.Repository
         public static List<Chirp> GetChirpsByTitle(string title)
         {
             List<Chirp> chirpList = new List<Chirp>();
-            foreach(Chirp chirp in DbContext)
+            foreach(Chirp chirp in ChirpRepository.GetAll())
             {
-                if(chirp.Title == title && chirp.BlogStatus == BlogStatus.Accepted)
+                if(chirp.Title == title && chirp.BlogStatus == ChirpStatus.Accepted)
                 {
                     chirpList.Add(chirp);
                 }
@@ -73,9 +51,9 @@ namespace Blog_Management.Database.Repository
         public static List<Chirp> GetChirpsByFirstName(string name)
         {
             List<Chirp> chirpList = new List<Chirp>();
-            foreach (Chirp chirp in DbContext)
+            foreach (Chirp chirp in ChirpRepository.GetAll())
             {
-                if (chirp.User.FirstName == name && chirp.BlogStatus == BlogStatus.Accepted)
+                if (chirp.User.FirstName == name && chirp.BlogStatus == ChirpStatus.Accepted)
                 {
                     chirpList.Add(chirp);
                 }
@@ -83,6 +61,7 @@ namespace Blog_Management.Database.Repository
             return chirpList;
 
         }
+        
 
     }
 }

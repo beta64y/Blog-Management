@@ -59,8 +59,18 @@ namespace Blog_Management.Services
                 if (UserRepository.IsUserExistByEmail(email) && (UserRepository.GetUserByEmail(email) is not Admin))
                 {
                     User user = UserRepository.GetUserByEmail(email);
-                    Console.WriteLine($"{user.FirstName} {user.LastName} Permanently Banned");
-                    UserRepository.Remove(user);
+                    foreach (Chirp chirp in DashBoardServices.GetChirpsByUser(user))
+                    {
+                        ChirpRepository.GetAll().Remove(chirp);
+                    }
+                    foreach (Comment comment in DashBoardServices.GetCommentsByUser(user))
+                    {
+                        CommentRepository.GetAll().Remove(comment);
+                    }
+                    UserRepository.Delete(user);
+                    Console.WriteLine($"{user.FirstName} {user.LastName} Permanently Deleted");
+                    
+                
 
                 }
             }
@@ -131,7 +141,25 @@ namespace Blog_Management.Services
             string title = GetTitle();
             string text = GetChirpText();
 
-            ChirpRepository.Append(Authentication.GetAccount(), title, text);
+            
+            string id;
+            while (true)
+            {
+                Random random = new Random();
+                id = Convert.ToString(random.Next(0, 100000));
+                for (int i = 0; i < 6 - id.Length; i++)
+                {
+                    id = "0" + id;
+                }
+                id = "BL" + id;
+                if (ChirpRepository.GetById(id) == null)
+                {
+                    break;
+                }
+                
+            }
+            Chirp chirp = new Chirp(title, text, Authentication.GetAccount(), id);
+            ChirpRepository.Add(chirp);
         }
         public static void DeleteChirp()
         {
@@ -186,7 +214,7 @@ namespace Blog_Management.Services
         }
         public static void ShowActiveAccountChirps()
         {
-            List<Chirp> chirpList = Authentication.GetAccount().Chirps;
+            List<Chirp> chirpList = DashBoardServices.GetChirpsByUser(Authentication.GetAccount());
             for (int i = 0; i < chirpList.Count; i++)
             {
                 GetChirp(chirpList[i]);
@@ -197,7 +225,7 @@ namespace Blog_Management.Services
             List<Chirp> chirps = ChirpRepository.GetAll();
             foreach(Chirp chirp in chirps)
             {
-                if(chirp.BlogStatus == BlogStatus.Waiting)
+                if(chirp.BlogStatus == ChirpStatus.Waiting)
                 {
                     GetChirp(chirp);
                 }
@@ -209,9 +237,9 @@ namespace Blog_Management.Services
             string id = Console.ReadLine();
             Chirp chirp = ChirpRepository.GetById(id);
 
-            if (chirp != null && chirp.BlogStatus == BlogStatus.Waiting)
+            if (chirp != null && chirp.BlogStatus == ChirpStatus.Waiting)
             {
-                chirp.BlogStatus = BlogStatus.Accepted;
+                chirp.BlogStatus = ChirpStatus.Accepted;
             }
             else
             {
@@ -224,9 +252,9 @@ namespace Blog_Management.Services
             string id = Console.ReadLine();
             Chirp chirp = ChirpRepository.GetById(id);
 
-            if (chirp != null && chirp.BlogStatus == BlogStatus.Waiting)
+            if (chirp != null && chirp.BlogStatus == ChirpStatus.Waiting)
             {
-                chirp.BlogStatus = BlogStatus.Rejected;
+                chirp.BlogStatus = ChirpStatus.Rejected;
             }
             else
             {
@@ -242,13 +270,38 @@ namespace Blog_Management.Services
         }
 
         // some tools 
+        public static List<Comment> GetCommentsByUser(User user)
+        {
+            List<Comment> comments = new List<Comment>();
+            foreach (Comment comment in CommentRepository.GetAll())
+            {
+                if (comment.User == user)
+                {
+                    comments.Add(comment);
+                }
+            }
+            return comments;
+        }
+        public static List<Chirp> GetChirpsByUser(User user)
+        {
+            List<Chirp> chirpList = new List<Chirp>();
+            foreach (Chirp chirp in ChirpRepository.GetAll())
+            {
+                if (chirp.User == user)
+                {
+                    chirpList.Add(chirp);
+                }
+            }
+            return chirpList;
+
+        }
         public static void SearchChirpById()
         {
             Console.Write("Please enter chirp's Code : ");
             string id = Console.ReadLine();
             Chirp chirp = ChirpRepository.GetById(id);
 
-            if (chirp != null && chirp.BlogStatus == BlogStatus.Accepted)
+            if (chirp != null && chirp.BlogStatus == ChirpStatus.Accepted)
             {
                 GetChirp(chirp);
             }
@@ -338,10 +391,10 @@ namespace Blog_Management.Services
         }
         private static void GetChirpComments(Chirp chirp)
         {
-            List<Comment> comments = CommentRepository.GetChirpComments(chirp);
+            List<Comment> comments = CommentRepository.GetCommentsByChirp(chirp);
             for(int i = 0; i < comments.Count; i++)
             {
-                Console.WriteLine($" {i+1}* [{comments[i].CreationTime}] [{comments[i].User.FirstName} {comments[i].User.LastName}] : {comments[i].CommentText}");
+                Console.WriteLine($" {i+1}* [{comments[i].CreationTime.ToString("MM/dd/yyyy")}] [{comments[i].User.FirstName} {comments[i].User.LastName}] : {comments[i].CommentText}");
             }
             Console.WriteLine("***************************************\n");
         }
@@ -349,9 +402,9 @@ namespace Blog_Management.Services
         {
             int z = 0;
             string[] textArray =text.Split(" ");
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < textArray.Length; i++)
             {
-                Console.Write(text[i] + " ");
+                Console.Write(textArray[i] + " ");
                 z += textArray[i].Length;
                 if (z > charcount)
                 {

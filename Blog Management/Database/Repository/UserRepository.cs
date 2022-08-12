@@ -20,11 +20,11 @@ namespace Blog_Management.Database.Repository
 
         public static void SeedUsers()
         {
-            DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade1@code.edu.az", "Yahya123"));
-            DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade2@code.edu.az", "Yahya123"));
-            DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade3@code.edu.az", "Yahya123"));
-            DbContext.Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade4.edu.az", "Yahya123"));
-            DbContext.Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade5@code.edu.az", "Yahya123"));
+            UserRepository.GetAll().Add(new User("Yahya", "Camalzade", "YahyaCamalzade1@code.edu.az", "Yahya123"));
+            UserRepository.GetAll().Add(new User("Yahya", "Camalzade", "YahyaCamalzade2@code.edu.az", "Yahya123"));
+            UserRepository.GetAll().Add(new User("Yahya", "Camalzade", "YahyaCamalzade3@code.edu.az", "Yahya123"));
+            UserRepository.GetAll().Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade4code.edu.az", "Yahya123"));
+            UserRepository.GetAll().Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade5@code.edu.az", "Yahya123"));
 
 
         }
@@ -35,18 +35,7 @@ namespace Blog_Management.Database.Repository
             user.Inbox.Add(new Message("Welcome , Your request has been read and approved"));
             return user;
         }
-        public static void Remove(User user)
-        {
-            foreach(Comment comment in user.Comments)
-            {
-                CommentRepository.Remove(comment);
-            }
-            foreach (Chirp chirp in user.Chirps)
-            {
-                ChirpRepository.Remove(chirp);
-            }
-            Delete(user);
-        }
+        
 
         public static void Update(User user, string firstName, string lastName)
         {
@@ -58,7 +47,7 @@ namespace Blog_Management.Database.Repository
 
         public static bool IsUserExistByEmailAndPassword(string email ,string password)
         {
-            foreach (User user in DbContext)
+            foreach (User user in UserRepository.GetAll())
             {
                 if (user.Email == email && user.Password == password)
                 {
@@ -72,7 +61,7 @@ namespace Blog_Management.Database.Repository
 
         public static bool IsUserExistByEmail(string email)
         {
-            foreach (User user in DbContext)
+            foreach (User user in UserRepository.GetAll())
             {
                 if (user.Email == email)
                 {
@@ -86,7 +75,7 @@ namespace Blog_Management.Database.Repository
 
         public static User GetUserByEmailAndPassword(string email, string password)
         {
-            foreach (User user in DbContext)
+            foreach (User user in UserRepository.GetAll())
             {
                 if (user.Email == email && user.Password == password)
                 {
@@ -100,7 +89,7 @@ namespace Blog_Management.Database.Repository
 
         public static User GetUserByEmail(string email)
         {
-            foreach (User user in DbContext)
+            foreach (User user in UserRepository.GetAll())
             {
                 if (user.Email == email)
                 {
@@ -118,12 +107,14 @@ namespace Blog_Management.Database.Repository
                 Delete(user);
             
         }
+        public static void GetUserBlogs(User user)
+        {
+            Add(new Admin(user.FirstName, user.LastName, user.Email, user.Password, user.Id, user.CreationTime));
+            Delete(user);
+
+        }
         
-            //new Admin("Yahya", "Camalzade", "Camalzadeyahya1@gmail.com", "Yahya123");
-            //new Admin("Yahya", "Camalzade", "Camalzadeyahya2@gmail.com", "Yahya123");
-             //new User("Yahya", "Camalzade", "Camalzadeyahya3@gmail.com", "Yahya123");
-             //new User("Yahya", "Camalzade", "Camalzadeyahya4@gmail.com", "Yahya123");
-        
+
 
 
 
