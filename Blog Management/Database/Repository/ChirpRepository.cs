@@ -6,11 +6,26 @@ using System.Threading.Tasks;
 using Blog_Management.Database.Models.Shares;
 using Blog_Management.Database.Repository.Common;
 using Blog_Management.Database.Models.Users;
+using Blog_Management.Database.Enums;
 
 namespace Blog_Management.Database.Repository
 {
     internal class ChirpRepository : Repository<Chirp, string>
     {
+        static ChirpRepository()
+        {
+            User user = UserRepository.GetById(1);
+            User user1 = UserRepository.GetById(2);
+            User user2 = UserRepository.GetById(3);
+
+            Append(user, "SalamSalam", "Salamsalamsalam");
+            Append(user1, "Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.");
+            Append(user2, "Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.");
+            DbContext[0].BlogStatus = BlogStatus.Accepted;
+            DbContext[2].BlogStatus = BlogStatus.Accepted;
+            DbContext[3].BlogStatus = BlogStatus.Accepted;
+        }
+
         public static void Append(User user, string title,string text)
         {
             string id;
@@ -47,7 +62,7 @@ namespace Blog_Management.Database.Repository
             List<Chirp> chirpList = new List<Chirp>();
             foreach(Chirp chirp in DbContext)
             {
-                if(chirp.Title == title)
+                if(chirp.Title == title && chirp.BlogStatus == BlogStatus.Accepted)
                 {
                     chirpList.Add(chirp);
                 }
@@ -60,7 +75,7 @@ namespace Blog_Management.Database.Repository
             List<Chirp> chirpList = new List<Chirp>();
             foreach (Chirp chirp in DbContext)
             {
-                if (chirp.User.FirstName == name)
+                if (chirp.User.FirstName == name && chirp.BlogStatus == BlogStatus.Accepted)
                 {
                     chirpList.Add(chirp);
                 }

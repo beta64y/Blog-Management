@@ -12,8 +12,22 @@ using Blog_Management.Database.Models.Inbox;
 namespace Blog_Management.Database.Repository
 {
     internal class UserRepository : Repository<User , int>
-    {        
-       
+    {
+        static UserRepository()
+        {
+            SeedUsers();
+        }
+
+        public static void SeedUsers()
+        {
+            DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade1@code.edu.az", "Yahya123"));
+            DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade2@code.edu.az", "Yahya123"));
+            DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade3@code.edu.az", "Yahya123"));
+            DbContext.Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade4.edu.az", "Yahya123"));
+            DbContext.Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade5@code.edu.az", "Yahya123"));
+
+
+        }
         public static User Append(string firstName, string lastName, string email, string password)
         {
             User user = new User(firstName, lastName, email, password);

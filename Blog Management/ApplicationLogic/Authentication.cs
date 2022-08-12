@@ -120,17 +120,7 @@ namespace Blog_Management.ApplicationLogic
             }
         }
 
-        public static void MakeChirp()
-        {
-            Console.Write("Please enter chirp's title : ");
-            string title = Console.ReadLine();
-            Console.Write("Please enter chirp's text : ");
-            string text = Console.ReadLine();
-            Random random = new Random();
-            
-
-            ChirpRepository.Append(Authentication.GetAccount(), title, text);
-        }
+        
         
         public static void Help()
         {

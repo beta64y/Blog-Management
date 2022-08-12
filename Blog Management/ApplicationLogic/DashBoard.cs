@@ -90,6 +90,18 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.UpdateforAdmin();
                 }
+                else if (command == "/show-auditing-chirps")
+                {
+                    DashBoardServices.ShowAuditingChirps();
+                }
+                else if (command == "/approve-chirp")
+                {
+                    DashBoardServices.ApproveChirp();
+                }
+                else if (command == "/reject-chirp")
+                {
+                    DashBoardServices.RejectChirp();
+                }
                 else if (command == "/make-admin")
                 {
                     DashBoardServices.AddAdmin();

@@ -8,6 +8,7 @@ using Blog_Management.Database.Models.Inbox;
 using Blog_Management.Database.Models.Users;
 using Blog_Management.Database.Repository;
 using Blog_Management.Database.Models.Shares;
+using Blog_Management.Database.Enums;
 
 namespace Blog_Management.Services
 {
@@ -127,9 +128,7 @@ namespace Blog_Management.Services
         //chirp
         public static void AddChirp()
         {
-            Console.Write("Please enter chirp's title : ");
             string title = GetTitle();
-            Console.Write("Please enter chirp's text : ");
             string text = GetChirpText();
 
             ChirpRepository.Append(Authentication.GetAccount(), title, text);
@@ -187,22 +186,52 @@ namespace Blog_Management.Services
         }
         public static void ShowActiveAccountChirps()
         {
-            foreach(Chirp chirp in Authentication.GetAccount().Chirps)
+            List<Chirp> chirpList = Authentication.GetAccount().Chirps;
+            for (int i = 0; i < chirpList.Count; i++)
             {
-                GetChirp(chirp);
+                GetChirp(chirpList[i]);
             }
         }                                                      
         public static void ShowAuditingChirps()
         {
-
+            List<Chirp> chirps = ChirpRepository.GetAll();
+            foreach(Chirp chirp in chirps)
+            {
+                if(chirp.BlogStatus == BlogStatus.Waiting)
+                {
+                    GetChirp(chirp);
+                }
+            }
         }
         public static void ApproveChirp()
         {
+            Console.Write("Please enter chirp's Code : ");
+            string id = Console.ReadLine();
+            Chirp chirp = ChirpRepository.GetById(id);
 
+            if (chirp != null && chirp.BlogStatus == BlogStatus.Waiting)
+            {
+                chirp.BlogStatus = BlogStatus.Accepted;
+            }
+            else
+            {
+                Console.WriteLine("please check Code");
+            }
         }
         public static void RejectChirp()
         {
+            Console.Write("Please enter chirp's Code : ");
+            string id = Console.ReadLine();
+            Chirp chirp = ChirpRepository.GetById(id);
 
+            if (chirp != null && chirp.BlogStatus == BlogStatus.Waiting)
+            {
+                chirp.BlogStatus = BlogStatus.Rejected;
+            }
+            else
+            {
+                Console.WriteLine("please check Code");
+            }
         }
 
 
@@ -217,9 +246,11 @@ namespace Blog_Management.Services
         {
             Console.Write("Please enter chirp's Code : ");
             string id = Console.ReadLine();
-            if (ChirpRepository.GetById(id) != null)
+            Chirp chirp = ChirpRepository.GetById(id);
+
+            if (chirp != null && chirp.BlogStatus == BlogStatus.Accepted)
             {
-                GetChirp(ChirpRepository.GetById(id));
+                GetChirp(chirp);
             }
             else
             {
@@ -230,11 +261,12 @@ namespace Blog_Management.Services
         {
             Console.Write("Please enter chirp's Title : ");
             string title = Console.ReadLine();
+
             if (ChirpRepository.GetChirpsByTitle(title).Count > 0)
             {
                 foreach (Chirp chirp in ChirpRepository.GetChirpsByTitle(title))
                 {
-                    GetChirp(chirp); // deyisdirilecek
+                    GetChirp(chirp); 
                 }
             }
             else
@@ -294,13 +326,15 @@ namespace Blog_Management.Services
         }
         private static void GetChirp(Chirp chirp)
         {
-            Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
-            Console.WriteLine($"{chirp.Title}\n");
-            OutputTextDesiner(chirp.ChirpText, 50);
-            Console.WriteLine($"Likes : {chirp.Likes}\n");
-            Console.WriteLine($"{chirp.CreationTime}\n");
-            Console.WriteLine("***************************************\n");
-            GetChirpComments(chirp);
+            
+                Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
+                Console.WriteLine($"{chirp.Title}\n");
+                OutputTextDesiner(chirp.ChirpText, 50);
+                Console.WriteLine($"{chirp.CreationTime}\n");
+                Console.WriteLine("***************************************\n");
+                GetChirpComments(chirp);
+            
+            
         }
         private static void GetChirpComments(Chirp chirp)
         {

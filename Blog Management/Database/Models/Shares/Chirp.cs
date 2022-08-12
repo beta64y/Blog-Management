@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog_Management.Database.Models.Common;
 using Blog_Management.Database.Models.Users;
-using Blog_Management.Database.Models.Inbox;
-using Blog_Management.Database.Models.Shares;
+using Blog_Management.Database.Enums;
 
 namespace Blog_Management.Database.Models.Shares
 {
@@ -17,7 +16,7 @@ namespace Blog_Management.Database.Models.Shares
         public string ChirpText { get; set; }
         public User User { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public int Likes { get; set; } = 0; 
+        public BlogStatus BlogStatus { get; set; } = BlogStatus.Waiting;
         public Chirp(string title, string chirpText, User user ,string id)
         {
             Id = id;
@@ -25,8 +24,15 @@ namespace Blog_Management.Database.Models.Shares
             ChirpText = chirpText;
             User = user;
             CreationTime = DateTime.Now;
-            
-            
+        }
+        public Chirp(string title, string chirpText, User user, string id,BlogStatus blogStatus)
+        {
+            Id = id;
+            Title = title;
+            ChirpText = chirpText;
+            User = user;
+            CreationTime = DateTime.Now;
+            BlogStatus = blogStatus;
         }
     }
 }
