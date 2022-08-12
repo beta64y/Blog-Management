@@ -354,7 +354,7 @@ namespace Blog_Management.Services
                 {
                     Console.WriteLine($"The Chirp title you entered is incorrect, the length is greater than 10 and less than 35.");
                 }
-                Console.WriteLine($"Enter Chirp title :");
+                Console.Write($"Enter Chirp title :");
                 title = Console.ReadLine();
                 title_wrongChecker = true;
             }
@@ -369,7 +369,7 @@ namespace Blog_Management.Services
             {
                 if (chirp_text_wrongChecker)
                 {
-                    Console.WriteLine($"The Chirp Text you entered is incorrect, the length is greater than 10 and less than 400.");
+                    Console.Write($"The Chirp Text you entered is incorrect, the length is greater than 10 and less than 400.");
                 }
                 Console.WriteLine($"Enter Chirp Text :");
                 chirp_text = Console.ReadLine();
@@ -412,6 +412,7 @@ namespace Blog_Management.Services
                     Console.WriteLine();
                 }
             }
+            Console.WriteLine();
         }
 
     }

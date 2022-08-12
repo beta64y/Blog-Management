@@ -14,17 +14,18 @@ namespace Blog_Management.Database.Repository
     {
         static ChirpRepository()
         {
+            ChirpRepository.Seed();    
+        }
+        public static void Seed()
+        {
             User user = UserRepository.GetById(1);
             User user1 = UserRepository.GetById(2);
             User user2 = UserRepository.GetById(3);
-            Chirp chirp = new Chirp("SalamSalam", "Salamsalamsalam", user,"BL00001");
-            Chirp chirp2 = new Chirp("Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.", user1, "BL00002");
-            Chirp chirp3 = new Chirp("Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.", user2, "BL00003");
-            ChirpRepository.GetAll()[0].BlogStatus = ChirpStatus.Accepted;
-            ChirpRepository.GetAll()[1].BlogStatus = ChirpStatus.Accepted;
-            ChirpRepository.GetAll()[2].BlogStatus = ChirpStatus.Accepted;            
-        }
+            ChirpRepository.GetAll().Add(new Chirp("SalamSalam", "Salamsalamsalam", user, "BL00001", ChirpStatus.Accepted));
+            ChirpRepository.GetAll().Add(new Chirp("Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.", user1, "BL00002", ChirpStatus.Accepted));
+            ChirpRepository.GetAll().Add(new Chirp("Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.", user2, "BL00003", ChirpStatus.Accepted));
 
+        }
        
         public static void Remove(Chirp chirp)
         {
