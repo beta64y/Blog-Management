@@ -14,6 +14,8 @@ namespace Blog_Management.Services
 {
     internal class DashBoardServices
     {
+        
+         
         //user
         public static void Update()
         {
@@ -59,15 +61,8 @@ namespace Blog_Management.Services
                 if (UserRepository.IsUserExistByEmail(email) && (UserRepository.GetUserByEmail(email) is not Admin))
                 {
                     User user = UserRepository.GetUserByEmail(email);
-                    foreach (Chirp chirp in DashBoardServices.GetChirpsByUser(user))
-                    {
-                        ChirpRepository.GetAll().Remove(chirp);
-                    }
-                    foreach (Comment comment in DashBoardServices.GetCommentsByUser(user))
-                    {
-                        CommentRepository.GetAll().Remove(comment);
-                    }
-                    UserRepository.Delete(user);
+                    
+                    UserRepository.Remove(user);
                     Console.WriteLine($"{user.FirstName} {user.LastName} Permanently Deleted");
                     
                 
@@ -100,7 +95,7 @@ namespace Blog_Management.Services
         {
             if (Authentication.GetAccount() is Admin)
             {
-                foreach (User user in UserRepository.GetAll())
+                foreach (User user in UserRepository.DbContext)
                 {
                     Console.WriteLine($"Name : \"{user.FirstName} {user.LastName}\" \nEmail : {user.Email} | Password : {user.Password} | ID : {user.Id} | Register Date : {user.CreationTime}");
 
@@ -111,7 +106,7 @@ namespace Blog_Management.Services
         }
         public static void ShowAdmins()
         {
-            foreach (User user in UserRepository.GetAll())
+            foreach (User user in UserRepository.DbContext)
             {
                 if (user is Admin)
                 {
@@ -159,7 +154,7 @@ namespace Blog_Management.Services
                 
             }
             Chirp chirp = new Chirp(title, text, Authentication.GetAccount(), id);
-            ChirpRepository.Add(chirp);
+            ChirpRepository.DbContext.Add(chirp);
         }
         public static void DeleteChirp()
         {
@@ -191,8 +186,9 @@ namespace Blog_Management.Services
         }
         public static void ShowChirps()
         {
-           foreach (Chirp chirp in ChirpRepository.GetAll())
+           foreach (Chirp chirp in ChirpRepository.DbContext)
                 {
+                if(chirp.ChirpStatus == ChirpStatus.Accepted)
                     GetChirp(chirp);
                 }
             
@@ -214,7 +210,7 @@ namespace Blog_Management.Services
         }
         public static void ShowActiveAccountChirps()
         {
-            List<Chirp> chirpList = DashBoardServices.GetChirpsByUser(Authentication.GetAccount());
+            List<Chirp> chirpList = ChirpRepository.GetChirpsByUser(Authentication.GetAccount());
             for (int i = 0; i < chirpList.Count; i++)
             {
                 GetChirp(chirpList[i]);
@@ -222,10 +218,10 @@ namespace Blog_Management.Services
         }                                                      
         public static void ShowAuditingChirps()
         {
-            List<Chirp> chirps = ChirpRepository.GetAll();
+            List<Chirp> chirps = ChirpRepository.DbContext;
             foreach(Chirp chirp in chirps)
             {
-                if(chirp.BlogStatus == ChirpStatus.Waiting)
+                if(chirp.ChirpStatus == ChirpStatus.Waiting)
                 {
                     GetChirp(chirp);
                 }
@@ -237,9 +233,9 @@ namespace Blog_Management.Services
             string id = Console.ReadLine();
             Chirp chirp = ChirpRepository.GetById(id);
 
-            if (chirp != null && chirp.BlogStatus == ChirpStatus.Waiting)
+            if (chirp != null && chirp.ChirpStatus == ChirpStatus.Waiting)
             {
-                chirp.BlogStatus = ChirpStatus.Accepted;
+                chirp.ChirpStatus = ChirpStatus.Accepted;
             }
             else
             {
@@ -252,9 +248,9 @@ namespace Blog_Management.Services
             string id = Console.ReadLine();
             Chirp chirp = ChirpRepository.GetById(id);
 
-            if (chirp != null && chirp.BlogStatus == ChirpStatus.Waiting)
+            if (chirp != null && chirp.ChirpStatus == ChirpStatus.Waiting)
             {
-                chirp.BlogStatus = ChirpStatus.Rejected;
+                chirp.ChirpStatus = ChirpStatus.Rejected;
             }
             else
             {
@@ -270,38 +266,15 @@ namespace Blog_Management.Services
         }
 
         // some tools 
-        public static List<Comment> GetCommentsByUser(User user)
-        {
-            List<Comment> comments = new List<Comment>();
-            foreach (Comment comment in CommentRepository.GetAll())
-            {
-                if (comment.User == user)
-                {
-                    comments.Add(comment);
-                }
-            }
-            return comments;
-        }
-        public static List<Chirp> GetChirpsByUser(User user)
-        {
-            List<Chirp> chirpList = new List<Chirp>();
-            foreach (Chirp chirp in ChirpRepository.GetAll())
-            {
-                if (chirp.User == user)
-                {
-                    chirpList.Add(chirp);
-                }
-            }
-            return chirpList;
-
-        }
+        
+        
         public static void SearchChirpById()
         {
             Console.Write("Please enter chirp's Code : ");
             string id = Console.ReadLine();
             Chirp chirp = ChirpRepository.GetById(id);
 
-            if (chirp != null && chirp.BlogStatus == ChirpStatus.Accepted)
+            if (chirp != null && chirp.ChirpStatus == ChirpStatus.Accepted)
             {
                 GetChirp(chirp);
             }
@@ -379,10 +352,10 @@ namespace Blog_Management.Services
         }
         private static void GetChirp(Chirp chirp)
         {
-            
-                Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
-                Console.WriteLine($"{chirp.Title}\n");
-                OutputTextDesiner(chirp.ChirpText, 50);
+
+            Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
+            Console.WriteLine($"{chirp.Title}\n");
+            OutputTextDesiner($"{chirp.ChirpText}\n", 50);
                 Console.WriteLine($"{chirp.CreationTime}\n");
                 Console.WriteLine("***************************************\n");
                 GetChirpComments(chirp);

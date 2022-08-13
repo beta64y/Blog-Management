@@ -10,21 +10,8 @@ namespace Blog_Management.Database.Repository.Common
     internal abstract class Repository<TEntity, TId>
        where TEntity : Entity<TId>
     {
-        private static List<TEntity> DbContext { get; set; } = new List<TEntity>();
+        public static List<TEntity> DbContext { get; set; } = new List<TEntity>();
 
-        public static void Add(TEntity entry)
-        {
-            DbContext.Add(entry);
-            
-        }
-        public static void Delete(TEntity entry)
-        {
-            DbContext.Remove(entry);
-        }
-        public static List<TEntity> GetAll()
-        {
-            return DbContext;
-        }
         public static TEntity GetById(TId id)
         {
             foreach (TEntity entry in DbContext)

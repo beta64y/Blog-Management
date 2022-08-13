@@ -20,22 +20,35 @@ namespace Blog_Management.Database.Repository
 
         public static void SeedUsers()
         {
-            UserRepository.GetAll().Add(new User("Yahya", "Camalzade", "YahyaCamalzade1@code.edu.az", "Yahya123"));
-            UserRepository.GetAll().Add(new User("Yahya", "Camalzade", "YahyaCamalzade2@code.edu.az", "Yahya123"));
-            UserRepository.GetAll().Add(new User("Yahya", "Camalzade", "YahyaCamalzade3@code.edu.az", "Yahya123"));
-            UserRepository.GetAll().Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade4code.edu.az", "Yahya123"));
-            UserRepository.GetAll().Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade5@code.edu.az", "Yahya123"));
+            UserRepository.DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade1@code.edu.az", "Yahya123"));
+            UserRepository.DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade2@code.edu.az", "Yahya123"));
+            UserRepository.DbContext.Add(new User("Yahya", "Camalzade", "YahyaCamalzade3@code.edu.az", "Yahya123"));
+            UserRepository.DbContext.Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade4code.edu.az", "Yahya123"));
+            UserRepository.DbContext.Add(new Admin("Yahya", "Camalzade", "YahyaCamalzade5@code.edu.az", "Yahya123"));
 
 
         }
         public static User Append(string firstName, string lastName, string email, string password)
         {
             User user = new User(firstName, lastName, email, password);
-            Add(user);
+            UserRepository.DbContext.Add(user);
             user.Inbox.Add(new Message("Welcome , Your request has been read and approved"));
             return user;
         }
-        
+        public static void Remove(User user)
+        {
+            foreach (Chirp chirp in ChirpRepository.GetChirpsByUser(user))
+            {
+                ChirpRepository.DbContext.Remove(chirp);
+
+            }
+            foreach (Comment comment in CommentRepository.GetCommentsByUser(user))
+            {
+                CommentRepository.DbContext.Remove(comment);
+            }
+            UserRepository.DbContext.Remove(user);
+            
+        }
 
         public static void Update(User user, string firstName, string lastName)
         {
@@ -47,7 +60,7 @@ namespace Blog_Management.Database.Repository
 
         public static bool IsUserExistByEmailAndPassword(string email ,string password)
         {
-            foreach (User user in UserRepository.GetAll())
+            foreach (User user in UserRepository.DbContext)
             {
                 if (user.Email == email && user.Password == password)
                 {
@@ -61,7 +74,7 @@ namespace Blog_Management.Database.Repository
 
         public static bool IsUserExistByEmail(string email)
         {
-            foreach (User user in UserRepository.GetAll())
+            foreach (User user in UserRepository.DbContext)
             {
                 if (user.Email == email)
                 {
@@ -75,7 +88,7 @@ namespace Blog_Management.Database.Repository
 
         public static User GetUserByEmailAndPassword(string email, string password)
         {
-            foreach (User user in UserRepository.GetAll())
+            foreach (User user in UserRepository.DbContext)
             {
                 if (user.Email == email && user.Password == password)
                 {
@@ -89,7 +102,7 @@ namespace Blog_Management.Database.Repository
 
         public static User GetUserByEmail(string email)
         {
-            foreach (User user in UserRepository.GetAll())
+            foreach (User user in UserRepository.DbContext)
             {
                 if (user.Email == email)
                 {
@@ -103,16 +116,11 @@ namespace Blog_Management.Database.Repository
 
         public static void AddAdmin(User user)
         {
-                Add(new Admin(user.FirstName, user.LastName, user.Email, user.Password,user.Id,user.CreationTime));
-                Delete(user);
+            UserRepository.DbContext.Add(new Admin(user.FirstName, user.LastName, user.Email, user.Password,user.Id,user.CreationTime));
+            UserRepository.DbContext.Remove(user);
             
         }
-        public static void GetUserBlogs(User user)
-        {
-            Add(new Admin(user.FirstName, user.LastName, user.Email, user.Password, user.Id, user.CreationTime));
-            Delete(user);
-
-        }
+        
         
 
 

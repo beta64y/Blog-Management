@@ -13,13 +13,13 @@ namespace Blog_Management.Database.Repository
     {
       public static void Remove(Comment comment)
         {
-            CommentRepository.GetAll().Remove(comment);
+            CommentRepository.DbContext.Remove(comment);
             
         }
       public static List<Comment> GetCommentsByChirp(Chirp chirp)
         {
             List<Comment> comments = new List<Comment>();
-            foreach(Comment comment in CommentRepository.GetAll())
+            foreach(Comment comment in CommentRepository.DbContext)
             {
                 if(comment.Chirp == chirp)
                 {
@@ -28,6 +28,18 @@ namespace Blog_Management.Database.Repository
             }    
             return comments;
         }
-        
+        public static List<Comment> GetCommentsByUser(User user)
+        {
+            List<Comment> comments = new List<Comment>();
+            foreach (Comment comment in CommentRepository.DbContext)
+            {
+                if (comment.User == user)
+                {
+                    comments.Add(comment);
+                }
+            }
+            return comments;
+        }
+
     }
 }
