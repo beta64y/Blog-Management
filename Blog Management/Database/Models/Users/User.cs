@@ -12,7 +12,7 @@ namespace Blog_Management.Database.Models.Users
 {
     internal class User : Entity<int>
     {      
-        private  static int IdCounter = 1;
+        private static int IdCounter = 1;
         public  string FirstName { get; set; }
         public  string LastName { get; set; }
         public  string Email { get; set; }

@@ -11,6 +11,11 @@ namespace Blog_Management.Database.Repository
 {
     internal class CommentRepository : Repository<Comment,int>
     {
+      public static void Append(User user, string commentText, Chirp chirp)
+        {
+            Comment comment = new Comment(user, commentText, chirp);
+            CommentRepository.DbContext.Add(comment);
+        }
       public static void Remove(Comment comment)
         {
             CommentRepository.DbContext.Remove(comment);
@@ -28,7 +33,7 @@ namespace Blog_Management.Database.Repository
             }    
             return comments;
         }
-        public static List<Comment> GetCommentsByUser(User user)
+      public static List<Comment> GetCommentsByUser(User user)
         {
             List<Comment> comments = new List<Comment>();
             foreach (Comment comment in CommentRepository.DbContext)
@@ -40,6 +45,6 @@ namespace Blog_Management.Database.Repository
             }
             return comments;
         }
-
+         
     }
 }

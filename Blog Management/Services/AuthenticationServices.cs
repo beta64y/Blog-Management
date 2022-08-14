@@ -21,7 +21,7 @@ namespace Blog_Management.Services
                 {
                     Console.WriteLine($"The FirstName you entered is incorrect, make sure the FirstName contains only letters,\nthe first letter is capitalized, and the length is greater than 3 and less than 30.");
                 }
-                Console.WriteLine($"Enter FirstName :");
+                Console.Write($"Enter FirstName :");
                 name = Console.ReadLine();
                 name_wrongChecker = true;
             }
@@ -39,7 +39,7 @@ namespace Blog_Management.Services
                 {
                     Console.WriteLine($"The LastName you entered is incorrect, make sure the LastName contains only letters,\nthe first letter is capitalized, and the length is greater than 3 and less than 30.");
                 }
-                Console.WriteLine($"Enter LastName :");
+                Console.Write($"Enter LastName :");
                 name = Console.ReadLine();
                 name_wrongChecker = true;
             }
@@ -54,9 +54,9 @@ namespace Blog_Management.Services
             {
                 if (email_wrongChecker)
                 {
-                    Console.WriteLine("The email you entered is incorrect, Receipent - can only be composed of letters and \nnumbers, the total length can be min 10 max 30, Separator - there must be an @ in \nbetween Domain - can only end with gamil.com.\n\"E-mail must be unique\"");
+                    Console.WriteLine("The email you entered is incorrect, Receipent - can only be composed of letters and \nnumbers, the total length can be min 10 max 30, Separator - there must be an @ in \nbetween Domain - can only end with code.edu.com.\n\"E-mail must be unique\"");
                 }
-                Console.WriteLine("Enter Email :");
+                Console.Write("Enter Email :");
                 email = Console.ReadLine();
                 email_wrongChecker = true;
             }
@@ -75,7 +75,7 @@ namespace Blog_Management.Services
                 {
                     Console.WriteLine("The password you entered is incorrect, Password - Must contain at least one uppercase \nletter, one lowercase letter and a number, and length cannot be less than 8");
                 }
-                Console.WriteLine("Enter Password:");
+                Console.Write("Enter Password:");
                 password = Console.ReadLine();
                 password_wrongChecker = true;
             }

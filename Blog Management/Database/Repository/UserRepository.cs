@@ -32,7 +32,7 @@ namespace Blog_Management.Database.Repository
         {
             User user = new User(firstName, lastName, email, password);
             UserRepository.DbContext.Add(user);
-            user.Inbox.Add(new Message("Welcome , Your request has been read and approved"));
+            user.Inbox.Add(new Message("Welcome , You successfully registered, Now you can use Panel Commands with your new account!"));
             return user;
         }
         public static void Remove(User user)

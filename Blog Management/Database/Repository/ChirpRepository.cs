@@ -26,7 +26,25 @@ namespace Blog_Management.Database.Repository
             ChirpRepository.DbContext.Add(new Chirp("Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.", user2, "BL00003", ChirpStatus.Accepted));
 
         }
-       
+        public static void Append(User user,string title,string text)
+        {
+            string id;
+            do
+            {
+                Random random = new Random();
+                id = Convert.ToString(random.Next(0, 100000));
+                for (int i = 0; i < 5 - id.Length; i++)
+                {
+                    id = "0" + id;
+                }
+                id = "BL" + id;
+                
+            }
+            while (ChirpRepository.GetById(id) != null);
+            Chirp chirp = new Chirp(title, text, user,id);
+            ChirpRepository.DbContext.Add(chirp);
+        }
+
         public static void Remove(Chirp chirp)
         {
             ChirpRepository.DbContext.Remove(chirp);

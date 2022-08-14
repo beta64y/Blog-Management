@@ -46,6 +46,10 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.ShowChirps();
                 }
+                else if (command == "/add-chirp")
+                {
+                    DashBoardServices.AddComment();
+                }
                 else if (command == "/find-chirp-by-code")
                 {
                     DashBoardServices.SearchChirpById();
@@ -73,10 +77,10 @@ namespace Blog_Management.ApplicationLogic
                 Console.Write("\nEnter panel command : ");
                 string command = Console.ReadLine();
 
-                
+
                 if (command == "/remove-user")
                 {
-                    DashBoardServices.RemoveUser(); 
+                    DashBoardServices.RemoveUser();
                 }
                 else if (command == "/inbox")
                 {
@@ -109,10 +113,6 @@ namespace Blog_Management.ApplicationLogic
                 else if (command == "/show-users")
                 {
                     DashBoardServices.ShowUsers();
-                }
-                else if (command == "/chirps")
-                {
-                    DashBoardServices.ShowActiveAccountChirps();
                 }
                 else if (command == "/show-filtered-chirps-with-comment")
                 {

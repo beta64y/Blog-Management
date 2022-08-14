@@ -135,26 +135,8 @@ namespace Blog_Management.Services
         {
             string title = GetTitle();
             string text = GetChirpText();
-
-            
-            string id;
-            while (true)
-            {
-                Random random = new Random();
-                id = Convert.ToString(random.Next(0, 100000));
-                for (int i = 0; i < 6 - id.Length; i++)
-                {
-                    id = "0" + id;
-                }
-                id = "BL" + id;
-                if (ChirpRepository.GetById(id) == null)
-                {
-                    break;
-                }
-                
-            }
-            Chirp chirp = new Chirp(title, text, Authentication.GetAccount(), id);
-            ChirpRepository.DbContext.Add(chirp);
+            ChirpRepository.Append(Authentication.GetAccount(), title, text);
+            Console.WriteLine("request sent");
         }
         public static void DeleteChirp()
         {
@@ -197,7 +179,7 @@ namespace Blog_Management.Services
         }
         public static void ShowFilteredChirpsWithComments()
         {
-            Console.Write("Please write the filter you will use for the search  : ");
+            Console.Write("Please write the filter you will use for the search (\"Title\" or \"Firstname\") : ");
             string filter = Console.ReadLine();
             if(filter == "Title")
             {
@@ -206,6 +188,10 @@ namespace Blog_Management.Services
             else if(filter == "Firstname")
             {
                 SearchChirpByAuthor();
+            }
+            else
+            {
+                Console.WriteLine("The filter you entered could not be found");
             }
         }
         public static void ShowActiveAccountChirps()
@@ -236,6 +222,8 @@ namespace Blog_Management.Services
             if (chirp != null && chirp.ChirpStatus == ChirpStatus.Waiting)
             {
                 chirp.ChirpStatus = ChirpStatus.Accepted;
+                Console.WriteLine("Chirp Approved");
+                chirp.User.Inbox.Add(new Message($"Your chirp  ({chirp.Title})({chirp.Id}) Approved"));
             }
             else
             {
@@ -251,6 +239,8 @@ namespace Blog_Management.Services
             if (chirp != null && chirp.ChirpStatus == ChirpStatus.Waiting)
             {
                 chirp.ChirpStatus = ChirpStatus.Rejected;
+                Console.WriteLine("Chirp Rejected");
+                chirp.User.Inbox.Add(new Message($"Your chirp  ({chirp.Title})({chirp.Id}) Rejected"));
             }
             else
             {
@@ -258,6 +248,25 @@ namespace Blog_Management.Services
             }
         }
 
+        //comment
+        public static void AddComment()
+        {
+            Console.Write("Please enter chirp's Code : ");
+            string id = Console.ReadLine();
+            Chirp chirp = ChirpRepository.GetById(id);
+
+            if (chirp != null && chirp.ChirpStatus == ChirpStatus.Accepted)
+            {
+                Console.Write("Please enter comment : ");
+                string text = Console.ReadLine();
+                CommentRepository.Append(Authentication.GetAccount(), text, chirp);
+                chirp.User.Inbox.Add(new Message($"({chirp.Id})  (<{chirp.User.FirstName}> <{chirp.User.LastName}>) tərəfindən comment əlavə olundu."));
+            }
+            else
+            {
+                Console.WriteLine("no match found");
+            }
+        }
 
         //help
         public static void Help()
@@ -266,8 +275,6 @@ namespace Blog_Management.Services
         }
 
         // some tools 
-        
-        
         public static void SearchChirpById()
         {
             Console.Write("Please enter chirp's Code : ");
@@ -308,14 +315,14 @@ namespace Blog_Management.Services
             {
                 foreach (Chirp chirp in ChirpRepository.GetChirpsByFirstName(name))
                 {
-                    GetChirp(chirp); 
+                    GetChirp(chirp);
                 }
             }
             else
             {
                 Console.WriteLine("no match found");
             }
-        }
+        }   
         private static string GetTitle()
         {
             bool title_wrongChecker = false;
@@ -327,7 +334,7 @@ namespace Blog_Management.Services
                 {
                     Console.WriteLine($"The Chirp title you entered is incorrect, the length is greater than 10 and less than 35.");
                 }
-                Console.Write($"Enter Chirp title :");
+                Console.Write($"Enter Chirp title : ");
                 title = Console.ReadLine();
                 title_wrongChecker = true;
             }
@@ -342,9 +349,9 @@ namespace Blog_Management.Services
             {
                 if (chirp_text_wrongChecker)
                 {
-                    Console.Write($"The Chirp Text you entered is incorrect, the length is greater than 10 and less than 400.");
+                    Console.WriteLine($"The Chirp Text you entered is incorrect, the length is greater than 10 and less than 400.");
                 }
-                Console.WriteLine($"Enter Chirp Text :");
+                Console.Write($"Enter Chirp Text : ");
                 chirp_text = Console.ReadLine();
                 chirp_text_wrongChecker = true;
             }
@@ -352,13 +359,14 @@ namespace Blog_Management.Services
         }
         private static void GetChirp(Chirp chirp)
         {
-
+            Console.WriteLine("***************************************\n");
             Console.WriteLine($"{chirp.User.FirstName} {chirp.User.LastName} say that :\n");
             Console.WriteLine($"{chirp.Title}\n");
             OutputTextDesiner($"{chirp.ChirpText}\n", 50);
-                Console.WriteLine($"{chirp.CreationTime}\n");
-                Console.WriteLine("***************************************\n");
-                GetChirpComments(chirp);
+            Console.WriteLine($"{chirp.CreationTime.ToString("MM/dd/yyyy")}\n");
+            Console.WriteLine($"{chirp.Id}\n");
+            Console.WriteLine("***************************************\n");
+            GetChirpComments(chirp);
             
             
         }
