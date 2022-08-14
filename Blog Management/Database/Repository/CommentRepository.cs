@@ -14,17 +14,17 @@ namespace Blog_Management.Database.Repository
       public static void Append(User user, string commentText, Chirp chirp)
         {
             Comment comment = new Comment(user, commentText, chirp);
-            CommentRepository.DbContext.Add(comment);
+            CommentRepository.GetAll().Add(comment);
         }
       public static void Remove(Comment comment)
         {
-            CommentRepository.DbContext.Remove(comment);
+            CommentRepository.GetAll().Remove(comment);
             
         }
       public static List<Comment> GetCommentsByChirp(Chirp chirp)
         {
             List<Comment> comments = new List<Comment>();
-            foreach(Comment comment in CommentRepository.DbContext)
+            foreach(Comment comment in CommentRepository.GetAll())
             {
                 if(comment.Chirp == chirp)
                 {
@@ -36,7 +36,7 @@ namespace Blog_Management.Database.Repository
       public static List<Comment> GetCommentsByUser(User user)
         {
             List<Comment> comments = new List<Comment>();
-            foreach (Comment comment in CommentRepository.DbContext)
+            foreach (Comment comment in CommentRepository.GetAll())
             {
                 if (comment.User == user)
                 {

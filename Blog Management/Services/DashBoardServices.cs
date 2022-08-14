@@ -95,7 +95,7 @@ namespace Blog_Management.Services
         {
             if (Authentication.GetAccount() is Admin)
             {
-                foreach (User user in UserRepository.DbContext)
+                foreach (User user in UserRepository.GetAll())
                 {
                     Console.WriteLine($"Name : \"{user.FirstName} {user.LastName}\" \nEmail : {user.Email} | Password : {user.Password} | ID : {user.Id} | Register Date : {user.CreationTime}");
 
@@ -106,7 +106,7 @@ namespace Blog_Management.Services
         }
         public static void ShowAdmins()
         {
-            foreach (User user in UserRepository.DbContext)
+            foreach (User user in UserRepository.GetAll())
             {
                 if (user is Admin)
                 {
@@ -168,7 +168,7 @@ namespace Blog_Management.Services
         }
         public static void ShowChirps()
         {
-           foreach (Chirp chirp in ChirpRepository.DbContext)
+           foreach (Chirp chirp in ChirpRepository.GetAll())
                 {
                 if(chirp.ChirpStatus == ChirpStatus.Accepted)
                     GetChirp(chirp);
@@ -204,7 +204,7 @@ namespace Blog_Management.Services
         }                                                      
         public static void ShowAuditingChirps()
         {
-            List<Chirp> chirps = ChirpRepository.DbContext;
+            List<Chirp> chirps = ChirpRepository.GetAll();
             foreach(Chirp chirp in chirps)
             {
                 if(chirp.ChirpStatus == ChirpStatus.Waiting)

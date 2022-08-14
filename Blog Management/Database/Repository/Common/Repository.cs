@@ -24,7 +24,10 @@ namespace Blog_Management.Database.Repository.Common
 
             return null;
         }
-
+        public static List<TEntity> GetAll()
+        {
+            return DbContext;
+        }
         
 
         

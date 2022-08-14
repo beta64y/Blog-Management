@@ -21,9 +21,9 @@ namespace Blog_Management.Database.Repository
             User user = UserRepository.GetById(1);
             User user1 = UserRepository.GetById(2);
             User user2 = UserRepository.GetById(3);
-            ChirpRepository.DbContext.Add(new Chirp("SalamSalam", "Salamsalamsalam", user, "BL00001", ChirpStatus.Accepted));
-            ChirpRepository.DbContext.Add(new Chirp("Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.", user1, "BL00002", ChirpStatus.Accepted));
-            ChirpRepository.DbContext.Add(new Chirp("Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.", user2, "BL00003", ChirpStatus.Accepted));
+            ChirpRepository.GetAll().Add(new Chirp("SalamSalam", "Salamsalamsalam", user, "BL00001", ChirpStatus.Accepted));
+            ChirpRepository.GetAll().Add(new Chirp("Məşhur aktyor dünyasını dəyişdi", "Türkiyəli aktyor Semih Sergen vəfat edib.", user1, "BL00002", ChirpStatus.Accepted));
+            ChirpRepository.GetAll().Add(new Chirp("Yalan Xeber", "Ordumuzun bölmələri tərəfindən Azərbaycan-Ermənistan dövlət sərhədində guya atəş açılması və nəticədə Ermənistan silahlı qüvvələrinin hərbiqulluqçusunun yaralanması barədə Ermənistan Müdafiə Nazirliyinin yaydığıməlumat yalandır.", user2, "BL00003", ChirpStatus.Accepted));
 
         }
         public static void Append(User user,string title,string text)
@@ -42,12 +42,12 @@ namespace Blog_Management.Database.Repository
             }
             while (ChirpRepository.GetById(id) != null);
             Chirp chirp = new Chirp(title, text, user,id);
-            ChirpRepository.DbContext.Add(chirp);
+            ChirpRepository.GetAll().Add(chirp);
         }
 
         public static void Remove(Chirp chirp)
         {
-            ChirpRepository.DbContext.Remove(chirp);
+            ChirpRepository.GetAll().Remove(chirp);
             foreach(Comment comment in CommentRepository.GetCommentsByChirp(chirp))
             {
                 
@@ -57,7 +57,7 @@ namespace Blog_Management.Database.Repository
         public static List<Chirp> GetChirpsByTitle(string title)
         {
             List<Chirp> chirpList = new List<Chirp>();
-            foreach(Chirp chirp in ChirpRepository.DbContext)
+            foreach(Chirp chirp in ChirpRepository.GetAll())
             {
                 if(chirp.Title == title && chirp.ChirpStatus == ChirpStatus.Accepted)
                 {
@@ -70,7 +70,7 @@ namespace Blog_Management.Database.Repository
         public static List<Chirp> GetChirpsByFirstName(string name)
         {
             List<Chirp> chirpList = new List<Chirp>();
-            foreach (Chirp chirp in ChirpRepository.DbContext)
+            foreach (Chirp chirp in ChirpRepository.GetAll())
             {
                 if (chirp.User.FirstName == name && chirp.ChirpStatus == ChirpStatus.Accepted)
                 {
@@ -83,7 +83,7 @@ namespace Blog_Management.Database.Repository
         public static List<Chirp> GetChirpsByUser(User user)
         {
             List<Chirp> chirpList = new List<Chirp>();
-            foreach (Chirp chirp in ChirpRepository.DbContext)
+            foreach (Chirp chirp in ChirpRepository.GetAll())
             {
                 if (chirp.User == user)
                 {
