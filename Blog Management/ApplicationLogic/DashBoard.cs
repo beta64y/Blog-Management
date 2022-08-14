@@ -46,7 +46,7 @@ namespace Blog_Management.ApplicationLogic
                 {
                     DashBoardServices.ShowChirps();
                 }
-                else if (command == "/add-chirp")
+                else if (command == "/add-comment")
                 {
                     DashBoardServices.AddComment();
                 }

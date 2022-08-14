@@ -120,18 +120,23 @@ namespace Blog_Management.ApplicationLogic
             }
         }
 
-        
-        
+
+
         public static void Help()
         {
-            
+            Console.WriteLine("/exit - close program");
+            Console.WriteLine("/register - allows you to register");
+            Console.WriteLine("/login - allows you to log in");
+            Console.WriteLine("/logout - allows you to log out");
+            Console.WriteLine("/accountinfo - show active account info");
+            Console.WriteLine("/panel - open panel");
         }
-        
 
 
 
 
-       
+
+
 
     }
     

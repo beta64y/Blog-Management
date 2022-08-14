@@ -271,7 +271,33 @@ namespace Blog_Management.Services
         //help
         public static void Help()
         {
-            // dash board ucun doldurulacaq
+            Console.WriteLine("/close - close panel");
+            Console.WriteLine("");
+            if (Authentication.GetAccount() is Admin)
+            {
+                Console.WriteLine("/update-admin - this command is updating the selected admin's account");
+                Console.WriteLine("/make-admin - this command allows Allows you to make the user admin  (not admin)");
+                Console.WriteLine("/remove-user -  this command allows you to ban any user (not admin)");
+                Console.WriteLine("/show-users - show users");
+                Console.WriteLine("/show-auditing-chirps - show auditing chirps");
+                Console.WriteLine("/approve-chirp - approve chirp");
+                Console.WriteLine("/reject-chirp - reject chirp");
+
+            }
+            else
+            {
+                Console.WriteLine("/update-user - this command allows you to update your account");
+                Console.WriteLine("/inbox");
+                Console.WriteLine("/show-admin - show admins");
+                Console.WriteLine("/chirps - show your own chirps");
+                Console.WriteLine("/add-chirp - send request to add vlog");
+                Console.WriteLine("/delete-chirp - delete chirp");
+                Console.WriteLine("/add-comment - add comment to chirp ");
+            }
+            Console.WriteLine("/show-filtered-chirps-with-comment - show chirps with filter");
+            Console.WriteLine("/show-chirps-with-comment - show chirps");
+            Console.WriteLine("/find-chirp-by-code - this command allows find chirp by code");
+
         }
 
         // some tools 
