@@ -258,7 +258,7 @@ namespace Blog_Management.Services
             if (chirp != null && chirp.ChirpStatus == ChirpStatus.Accepted)
             {
                 Console.Write("Please enter comment : ");
-                string text = Console.ReadLine();
+                string text = GetChirpComment();
                 CommentRepository.Append(Authentication.GetAccount(), text, chirp);
                 chirp.User.Inbox.Add(new Message($"({chirp.Id})  (<{chirp.User.FirstName}> <{chirp.User.LastName}>) tərəfindən comment əlavə olundu."));
             }
@@ -382,6 +382,23 @@ namespace Blog_Management.Services
                 chirp_text_wrongChecker = true;
             }
             return chirp_text;
+        }
+        private static string GetChirpComment()
+        {
+            bool chirp_comment_wrongChecker = false;
+            string chirp_comment = "";
+
+            while (!ValidationServices.IsLengthBetween(chirp_comment, 10, 50))
+            {
+                if (chirp_comment_wrongChecker)
+                {
+                    Console.WriteLine($"The Chirp comment you entered is incorrect, the length is greater than 10 and less than 400.");
+                }
+                Console.Write($"Enter Chirp comment : ");
+                chirp_comment = Console.ReadLine();
+                chirp_comment_wrongChecker = true;
+            }
+            return chirp_comment;
         }
         private static void GetChirp(Chirp chirp)
         {
